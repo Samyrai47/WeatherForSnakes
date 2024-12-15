@@ -34,6 +34,7 @@ class WeatherReport(WeatherAPI):
                 wind_speed = weather_data['wind']['speed']
                 cloud_cover = weather_data['weather'][0]['description']
                 humidity = weather_data['main']['humidity']
+                return (temperature, temperature_feels, wind_speed, cloud_cover, humidity)
             except KeyError:
                 print(f'Не удалось получить данные о погоде для города: {city}')
 
