@@ -1,6 +1,7 @@
 import requests
 import os
 
+
 class WeatherAPI:
     def __init__(self, api_key: str):
         self.api_key = api_key
@@ -24,6 +25,7 @@ class WeatherAPI:
             print(f'Не удалось определить город: {city}')
             return {}
 
+
 class WeatherReport(WeatherAPI):
     def display_weather(self, city: str) -> None:
         weather_data = self.get_weather_data(city)
@@ -37,6 +39,7 @@ class WeatherReport(WeatherAPI):
                 return (temperature, temperature_feels, wind_speed, cloud_cover, humidity)
             except KeyError:
                 print(f'Не удалось получить данные о погоде для города: {city}')
+
 
 if __name__ == "__main__":
     api_key = os.getenv('WEATHER_API_KEY')
