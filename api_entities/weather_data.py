@@ -1,17 +1,4 @@
-import dotenv
-from api.api import WeatherAPI
-
-
-class WeatherHandler:
-    PATH_TO_ENV = '../.env'
-
-    def __init__(self):
-        self.api_key = dotenv.get_key(WeatherHandler.PATH_TO_ENV, 'SECRET_KEY')
-        self.api = WeatherAPI(self.api_key)
-
-    def export_data(self, city):
-        data = self.api.get_weather_data(city)
-        return data
+from api_entities.weather_handler import WeatherHandler
 
 
 class WeatherData:
@@ -31,7 +18,11 @@ class WeatherData:
     def __setattr__(self, key, value):
         self.__dict__[key] = value
 
+    def __str__(self):
+        return str(self.__dict__.items())
 
-handler = WeatherHandler()
-data = WeatherData(handler.export_data('Москва'))
-print(data.list_of_names())
+
+if __name__ == '__main__':
+    handler = WeatherHandler()
+    data = WeatherData(handler.export_data('Москва'))
+    print(data)
