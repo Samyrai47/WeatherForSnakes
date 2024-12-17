@@ -147,7 +147,7 @@ class MyWindow(QMainWindow):
 
     def init_city_label(self):
         city_label = QtWidgets.QLabel("Введите город:", self)
-        city_label.setGeometry(50, 110, 400, 30)
+        city_label.setGeometry(50, 110, 1000, 30)
         city_label.setStyleSheet(
             # Шрифт
             'color: #fae1c2;'
@@ -203,11 +203,11 @@ class MyWindow(QMainWindow):
     def init_temp_label(self):
         temp_tabel = QtWidgets.QLabel("", self)
         temp_tabel.hide()
-        temp_tabel.setGeometry(600, 425, 200, 100)
+        temp_tabel.setGeometry(600, 425, 400, 150)
         temp_tabel.setStyleSheet(
             'color: #fae1c2;'
             'font-family: Noto Serif;'
-            'font-size: 128px;'
+            'font-size: 98px;'
         )
         return temp_tabel
 
@@ -283,20 +283,25 @@ class MyWindow(QMainWindow):
 
             # Все значения здесь должны подставляться из API, пока просто тестовые данные стоят
             self.check_clouds(data.clouds)
-            self.temp_tabel.setText(f'{data.temp}')
-            self.temp_feels_label.setText(f"Ощущается как: {data.feels_like}")
+            self.temp_tabel.setText(f'{round(data.temp, 0)}°C')
+            self.temp_feels_label.setText(f"Ощущается как: {data.feels_like}°C")
             self.additional_info_label.setText(
-                f"Облачно.\n\nВетер: {data.wind_speed} м/c\n\nВлажность: {data.humidity}%"
+                f"Облачно. Ветер: {data.wind_speed} м/c. Влажность: {data.humidity}%"
             )
+
+            self.city_label.hide()
+            self.city_label = self.init_city_label()
+            self.city_label.show()
 
             self.menu_button.show()
             self.weather_image.show()
-            self.temp_tabel.show()
             self.temp_feels_label.show()
             self.additional_info_label.show()
+            self.temp_tabel.show()
         except KeyError:
             self.city_label.setText(f'Похоже, города с названием "{self.edit_text.text()}" нет в наших данных.')
-            self.error_message_label.show()
+        except ConnectionError:
+            self.city_label.setText("Блин, колво запрсов сново сгорело, Коль, поменяй токен!")
 
     def start_progress(self):
         self.progress_bar.show()
@@ -309,11 +314,11 @@ class MyWindow(QMainWindow):
         if check >= 60:
             pixmap = QPixmap('../images/cloudy4.jpg')
             self.weather_image.setPixmap(pixmap)
-        elif check <= 20:
-            pixmap = QPixmap('../images/clear2.jpg')
+        elif check >= 30:
+            pixmap = QPixmap('../images/pasmurno.jpg')
             self.weather_image.setPixmap(pixmap)
         else:
-            pixmap = QPixmap('../images/pasmurno.jpg')
+            pixmap = QPixmap('../images/clear2.jpg.jpg')
             self.weather_image.setPixmap(pixmap)
 
 
